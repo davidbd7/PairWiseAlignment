@@ -1,0 +1,4 @@
+>Sequence1
+DUCK
+>Sequence2
+TRUMP
