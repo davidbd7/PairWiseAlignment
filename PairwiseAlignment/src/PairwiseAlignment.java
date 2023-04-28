@@ -28,20 +28,18 @@ public class PairwiseAlignment {
 		System.out.println(alignedStrings[1]);
 	}
 	
-	//helper functions
 	public void printMatrix(int[][] m) {
-		for (int i = 0; i < m.length; i++)
-		  {
-		    // length returns number of rows
-		    for (int j = 0; j < m[i].length; j++)
-		    {
-		      // here length returns number of columns corresponding to current row
-			// using tabs for equal spaces, looks better aligned
-			// matrix[i][j] will return each element placed at row ‘i',column 'j'
-			System.out.print( m[i][j]  + "\t");
-		     }
-		     System.out.println();
-		  }
+		//prints the given matrix
+		
+		//traverse the matrix
+		for(int i = 0; i < m.length; i++) {
+			for(int j = 0; j < m[0].length; j++) {
+				//print out the value at i,j
+				System.out.print(m[i][j] + "\t");
+			}
+			//print new line
+			System.out.println("");
+		}
 	}
 
 	public ArrayList<String> readFile(File f){
