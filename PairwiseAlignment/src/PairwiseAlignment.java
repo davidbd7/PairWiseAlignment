@@ -5,19 +5,7 @@ public class PairwiseAlignment {
 	
 	public static void main(String[] args){
 		PairwiseAlignment pwa = new PairwiseAlignment();
-		/*
-		 * int[][] m = new int[5][5]; m = pwa.initScoreMatrix(m); pwa.printMatrix(m);
-		 * int[][] d = new int[5][5]; d = pwa.initDirMatrix(d); pwa.printMatrix(d);
-		 * int[] scoreTest = new int[2]; scoreTest = pwa.calculateScore('D', 'C', -3,
-		 * -2, -5); System.out.print(scoreTest[0] + " ");
-		 * System.out.println(scoreTest[1]);
-		 * ArrayList<int[][]> matrixList = pwa.align("DUCK", "TRUMP");
-		pwa.printMatrix(matrixList.get(0));
-		pwa.printMatrix(matrixList.get(1));
-		 */
-		//int[][] m = new int[0][0];
-		//int[][] d = new int[0][0];
-		File f = new File("fastafile.txt");
+		File f = new File("fastaSequencesFromProject.txt");
 		ArrayList<String> sequences = pwa.readFile(f);
 		ArrayList<int[][]> matrixList = pwa.align(sequences.get(0), sequences.get(1));
 		pwa.printMatrix(matrixList.get(0));
@@ -40,6 +28,14 @@ public class PairwiseAlignment {
 			//print new line
 			System.out.println("");
 		}
+	}
+	
+	public String arrayListToString(ArrayList<Character> l) {
+		StringBuilder builder = new StringBuilder(l.size());
+		for(int i = 0; i < l.size(); i++) {
+			builder.append(l.get(i));
+		}
+		return builder.toString();
 	}
 
 	public ArrayList<String> readFile(File f){
@@ -183,13 +179,10 @@ public class PairwiseAlignment {
 		//keeps track of matrix position
 		int i = m.length - 1;
 		int j = m[0].length - 1;
-
-		//take the longest of the two strings
-		int maxLength = Math.max(first.length(), second.length());
 		
-		//create two char arrays for the results
-		char[] resultN = new char[maxLength];
-		char[] resultW = new char[maxLength];
+		//create two char ArraysLists for the results
+		ArrayList<Character> resultN = new ArrayList<>();
+		ArrayList<Character> resultW = new ArrayList<>();
 		
 		//keeps track of char in the strings
 		int bufferN = 1;
@@ -205,8 +198,8 @@ public class PairwiseAlignment {
 				//north, thus reduce a row
 				i--;
 				//also introduce an indel to the string to the north (second)
-				resultN[maxLength - n] = '-';
-				resultW[maxLength - n] = first.charAt(first.length() - bufferN);
+				resultN.add('-');
+				resultW.add(first.charAt(first.length() - bufferN));
 				
 				//reduce buffer for N
 				bufferN++;
@@ -214,8 +207,8 @@ public class PairwiseAlignment {
 				//west, thus reduce a column
 				j--;
 				//also introduce an indel to the string to the west (first)
-				resultN[maxLength - n] = second.charAt(second.length() - bufferW);
-				resultW[maxLength - n] = '-';
+				resultN.add(second.charAt(second.length() - bufferW));
+				resultW.add('-');
 				
 				//reduce buffer for W
 				bufferW++;
@@ -224,8 +217,8 @@ public class PairwiseAlignment {
 				i--;
 				j--;
 				//no indels added
-				resultN[maxLength - n] = second.charAt(second.length() - bufferW);
-				resultW[maxLength - n] = first.charAt(first.length() - bufferN);
+				resultN.add(second.charAt(second.length() - bufferW));
+				resultW.add(first.charAt(first.length() - bufferN));
 				
 				//increase the buffer
 				bufferN++;
@@ -233,9 +226,14 @@ public class PairwiseAlignment {
 			}
 			n++;
 		}
-		//return the strings
-		result[0] = String.valueOf(resultW);
-		result[1] = String.valueOf(resultN);
+		//reverse the ArrayList
+		Collections.reverse(resultN);
+		Collections.reverse(resultW);
+		
+		//convert the ArrayList to a string
+		result[0] = arrayListToString(resultN);
+		result[1] = arrayListToString(resultW);
+		
 		return result;
 	}
 }
