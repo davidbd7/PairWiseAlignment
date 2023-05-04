@@ -4,16 +4,29 @@ import java.io.*;
 public class PairwiseAlignment {
 	
 	public static void main(String[] args){
+		//creates instance of class PWA
 		PairwiseAlignment pwa = new PairwiseAlignment();
-		File f = new File("fastaSequencesFromProject.txt");
+		
+		//creates new file
+		File f = new File("fastafile.txt");
+		
+		//read the file
 		ArrayList<String> sequences = pwa.readFile(f);
+		
+		//run the alignment alg
 		ArrayList<int[][]> matrixList = pwa.align(sequences.get(0), sequences.get(1));
+		
+		//print resulting matrices
 		pwa.printMatrix(matrixList.get(0));
 		pwa.printMatrix(matrixList.get(1));
-		System.out.println(pwa.scoreOfMatrix(matrixList.get(0)));
+		
+		//print the score
+		System.out.println("Score of the Alingment " + pwa.scoreOfMatrix(matrixList.get(0)) + "\n");
+		
+		//print the trace back
 		String[] alignedStrings = pwa.traceback(matrixList.get(1), sequences.get(0), sequences.get(1));
-		System.out.println(alignedStrings[0]);
-		System.out.println(alignedStrings[1]);
+		System.out.println("First Sequence: " + alignedStrings[0] + "\n");
+		System.out.println("Second Sequence: " + alignedStrings[1] + "\n");
 	}
 	
 	public void printMatrix(int[][] m) {
@@ -28,6 +41,9 @@ public class PairwiseAlignment {
 			//print new line
 			System.out.println("");
 		}
+		
+		//print new line for format
+		System.out.println();
 	}
 	
 	public String arrayListToString(ArrayList<Character> l) {
